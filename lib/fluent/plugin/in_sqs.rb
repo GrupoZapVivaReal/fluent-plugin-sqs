@@ -7,7 +7,9 @@ module Fluent::Plugin
     Fluent::Plugin.register_input('sqs', self)
 
     helpers :timer
-
+    
+    config_param :aws_key_id, :string, default: nil, secret: true
+    config_param :aws_sec_key, :string, default: nil, secret: true
     config_param :tag, :string
     config_param :region, :string, default: 'ap-northeast-1'
     config_param :sqs_url, :string, default: nil
@@ -23,6 +25,8 @@ module Fluent::Plugin
       super
 
       Aws.config = {
+        access_key_id: @aws_key_id,
+        secret_access_key: @aws_sec_key,
         region: @region
       }
     end
